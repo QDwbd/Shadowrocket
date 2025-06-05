@@ -4,7 +4,7 @@
 [需要安装](https://tauri.app/v1/guides/getting-started/prerequisites)
 [需要安装](https://pnpm.io/installation)
 
-
+## 修改了背景模板 删除了除mihomo以外的内核
 
 ```
 pnpm i
