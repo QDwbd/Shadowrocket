@@ -1,0 +1,72 @@
+name: Build Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      # 1️⃣ 拉取仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ 安装 Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+
+      # 3️⃣ 安装 pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      # 4️⃣ 安装依赖
+      - name: Install dependencies
+        run: pnpm install
+
+      # 5️⃣ 校验依赖
+      - name: Check dependencies
+        run: pnpm check
+
+      # 6️⃣ 构建 Tauri 项目
+      - name: Build the project
+        run: pnpm run build
+
+      # 7️⃣ 获取 package.json 版本号
+      - name: Get version from package.json
+        id: get_version
+        shell: pwsh
+        run: |
+          $version = node -p "require('./package.json').version"
+          echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      # 8️⃣ 创建 GitHub Release
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          body: |
+            📦 This is a new release of Shadowrocket.
+            Version: v${{ env.VERSION }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 9️⃣ 上传 Tauri 构建的 exe/msi 文件
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+          files: |
+            backend/target/release/bundle/**/*Shadowrocket*.exe
+            backend/target/release/bundle/**/*Shadowrocket*.msi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
