@@ -62,7 +62,7 @@ jobs:
 
       # 9️⃣ 上传 Tauri 构建的 exe/msi 文件
       - name: Upload release assets
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2.4.1
         with:
           tag_name: v${{ env.VERSION }}
           files: |
