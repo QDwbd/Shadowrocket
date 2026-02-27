@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+  xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment>
+    <!-- close shadowrocket processes while install-->
+    <util:CloseApplication Id="ShadowrocketCloseApp" Target="Shadowrocket.exe" CloseMessage="yes" RebootPrompt="no" TerminateProcess="1">
+    </util:CloseApplication>
+    <util:CloseApplication Id="ShadowrocketCloseService" Target="clash-verge-service.exe" CloseMessage="yes" RebootPrompt="no" TerminateProcess="1">
+    </util:CloseApplication>
+    <util:CloseApplication Id="ShadowrocketCloseMihomo" Target="mihomo.exe" CloseMessage="yes" RebootPrompt="no" TerminateProcess="1">
+    </util:CloseApplication>
+    <util:CloseApplication Id="ShadowrocketCloseMihomoAlpha" Target="mihomo-alpha.exe" CloseMessage="yes" RebootPrompt="no" TerminateProcess="1">
+    </util:CloseApplication>
+  </Fragment>
+</Wix>

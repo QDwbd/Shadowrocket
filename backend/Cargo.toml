@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = ["tauri", "sysproxy-rs"]
+
+[workspace.package]
+edition = "2021"
+authors = ["QDwbd"]
+repository = "https://github.com/QDwbd/Shadowrocket.git"
+license = "GPL-3.0"
+
+[workspace.dependencies]
+thiserror = "1"
+tracing = "0.1"
+
+[profile.release]
+panic = "unwind"
+codegen-units = 1
+lto = true
+opt-level = "s"
